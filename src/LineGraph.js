@@ -31,9 +31,6 @@ const options = {
     },
     yAxes: [
       {
-        gridLines: {
-          display: false,
-        },
         ticks: {
           callback: function (value, index, values) {
             return numeral(value).format("0a")
@@ -44,21 +41,8 @@ const options = {
   },
 }
 
-function LineGraph({ casesType = "cases" }) {
+function LineGraph({ casesType = "cases", ...props }) {
   const [data, setData] = useState({})
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=30")
-        .then((response) => response.json())
-        .then((data) => {
-          const chartData = buildChartData(data, casesType)
-          setData(chartData)
-        })
-    }
-
-    fetchData()
-  }, [casesType])
 
   const buildChartData = (data, casesType = "cases") => {
     const chartData = []
@@ -77,12 +61,29 @@ function LineGraph({ casesType = "cases" }) {
     return chartData
   }
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=30")
+        .then((response) => response.json())
+        .then((data) => {
+          const chartData = buildChartData(data, casesType)
+          setData(chartData)
+
+          let a = chartData.map((element) => element.x)
+          console.log("filtered", a)
+        })
+    }
+
+    fetchData()
+  }, [casesType])
+
   return (
-    <div className="mt10">
+    <div className={props.className}>
       {data?.length > 0 && (
         <Line
           options={options}
           data={{
+            labels: data.map((element) => element.x),
             datasets: [
               {
                 backgroundColor: "rgba(204, 16, 52, 0.5)",
