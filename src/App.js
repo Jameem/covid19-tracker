@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react"
 import { MenuItem, FormControl, Select } from "@material-ui/core"
+import InfoBox from "./InfoBox"
 
 import "./App.css"
 
 function App() {
-  const [countries, setCountries] = useState(["USA", "UK"])
+  const [countries, setCountries] = useState([])
+  const [country, setCountry] = useState("worldwide")
 
   useEffect(() => {
     const getCountriesData = async () => {
@@ -16,8 +18,6 @@ function App() {
             value: country.countryInfo.iso2,
           }))
 
-          console.log(countries)
-
           setCountries(countries)
         })
     }
@@ -25,18 +25,29 @@ function App() {
     getCountriesData()
   }, [])
 
+  const onCountryChange = (event) => {
+    const countryCode = event.target.value
+    setCountry(countryCode)
+  }
+
   return (
     <div className="app">
-      {/* Header */}
       <div className="app_header">
         <h1>COVID-19 TRACKER</h1>
         <FormControl className="app_dropdown">
-          <Select variant="outlined" value="abc">
+          <Select variant="outlined" onChange={onCountryChange} value={country}>
+            <MenuItem value="worldwide">Worldwide</MenuItem>
             {countries.map((country) => {
               return <MenuItem value={country.value}>{country.name}</MenuItem>
             })}
           </Select>
         </FormControl>
+      </div>
+
+      <div className="app_stats">
+        <InfoBox title="Covid-19 Cases" cases={1000} total={2000}></InfoBox>
+        <InfoBox title="Recovered" cases={1000} total={2000}></InfoBox>
+        <InfoBox title="Deaths" cases={1000} total={2000}></InfoBox>
       </div>
     </div>
   )
