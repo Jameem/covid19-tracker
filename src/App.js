@@ -72,8 +72,12 @@ function App() {
         setCountry(countryCode)
         setCountryInfo(data)
 
-        setMapCenter([data.countryInfo.lat, data.countryInfo.long])
-        setMapZoom(4)
+        if (countryCode !== "worldwide") {
+          setMapCenter([data.countryInfo.lat, data.countryInfo.long])
+          setMapZoom(4)
+        } else {
+          setMapCenter([34.80746, -40.4796])
+        }
       })
   }
 
