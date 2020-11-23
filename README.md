@@ -1,4 +1,4 @@
-## Available Scripts
+## Covid-19 Tracker
 
 In the project directory, you can run:
 
