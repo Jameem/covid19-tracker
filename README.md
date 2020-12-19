@@ -1,5 +1,7 @@
 ## Covid-19 Tracker
 
+### An application to track covid-19 information across the globe.
+
 In the project directory, you can run:
 
 ### `npm start`
